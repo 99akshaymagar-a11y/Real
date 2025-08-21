@@ -1,18 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Basic HTML Headings</title>
-</head>
-<body>
+<meta charset="UTF-8" />
+<title>Birthday Countdown</title>
+<style>
+  body {
+      font-family: Arial, sans-serif;
+          text-align: center;
+              margin-top: 40px;
+                }
+                  #countdown {
+                      font-size: 24px;
+                          margin-top: 20px;
+                            }
+                              img {
+                                  margin-top: 30px;
+                                      width: 300px;
+                                          height: auto;
+                                              border-radius: 10px;
+                                                }
+                                                </style>
+                                                </head>
+                                                <body>
 
-  <h1>LAWDA</h1>
-  <h2>This is Heading 2</h2>
-  
-  <h3>This is Heading 3</h3>
-  <h4>This is Heading 4</h4>
-  <h5>This is Heading 5</h5>
-  <h6>This is Heading 6</h6>
+                                                <h1>Happy birthday bade</h1>
 
-</body>
-</html>
+                                                <div id="countdown"></div>
+
+                                                <img src="https://images.unsplash.com/photo-1512385004111-a6726aa4e478?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5dHx8MHx8fHx8fHx8MTY5MTQzNzIyNQ&ixlib=rb-4.0.3&q=80&w=400" alt="Birthday Celebration" />
+
+                                                <script>
+                                                  // Set your birthday date here (YYYY-MM-DD format)
+                                                    const birthday = new Date("2025-08-23T00:00:00").getTime();
+
+                                                      function updateCountdown() {
+                                                          const now = new Date().getTime();
+                                                              const distance = birthday - now;
+
+                                                                  if (distance < 0) {
+                                                                        document.getElementById('countdown').innerHTML = "🎉 Happy Birthday! 🎉";
+                                                                              return;
+                                                                                  }
+
+                                                                                      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                                                                                          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                                                                              const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                                                                                                  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                                                                                                      document.getElementById('countdown').innerHTML =
+                                                                                                            days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+                                                                                                              }
+
+                                                                                                                updateCountdown(); // Initial call
+                                                                                                                  setInterval(updateCountdown, 1000); // Update every second
+                                                                                                                  </script>
+
+                                                                                                                  </body>
+                                                                                                                  </html>
