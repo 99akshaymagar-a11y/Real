@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rotating Image</title>
+<style>
+  /* Center body content */
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+  }
+
+  /* Define the rotation animation */
+  @keyframes rotate360 {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Style for the rotating image */
+  .rotating-img {
+    width: 200px; /* Adjust size as needed */
+    height: 200px;
+    animation: rotate360 5s linear infinite;
+  }
+</style>
+</head>
+<body>
+
+<img src="https://www.tutorialspoint.com/images/html.gif" alt="Rotating Photo" class="rotating-img" />
+
+</body>
+</html>
