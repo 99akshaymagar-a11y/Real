@@ -1,6 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8" />
+      <title>Blackjack Game</title>
+        <style>
+            body {
+                  font-family: Arial, sans-serif;
+                        text-align: center;
+                              margin-top: 50px;
+                                  }
+                                      #blackjackBtn {
+                                            background-color: #006400;
+                                                  border: none;
+                                                        color: white;
+                                                              padding: 15px 30px;
+                                                                    font-size: 24px;
+                                                                          cursor: pointer;
+                                                                                border-radius: 12px;
+                                                                                      display: inline-flex;
+                                                                                            align-items: center;
+                                                                                                  gap: 15px;
+                                                                                                        transition: background-color 0.3s ease;
+                                                                                                            }
+                                                                                                                #blackjackBtn:hover {
+                                                                                                                      background-color: #228b22;
+                                                                                                                          }
+                                                                                                                              #blackjackBtn img {
+                                                                                                                                    height: 48px;
+                                                                                                                                          width: auto;
+                                                                                                                                                border-radius: 8px;
+                                                                                                                                                      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+                                                                                                                                                          }
+                                                                                                                                                            </style>
+                                                                                                                                                            </head>
+                                                                                                                                                            <body>
+
+                                                                                                                                                              <button id="blackjackBtn">
+                                                                                                                                                                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Playing_card_spade_A.svg/120px-Playing_card_spade_A.svg.png" alt="Blackjack Card" />
+                                                                                                                                                                      Blackjack
+                                                                                                                                                                        </button>
+
+                                                                                                                                                                          <script src="Blackjack.js"></script>
+                                                                                                                                                                            <script>
+                                                                                                                                                                                document.getElementById('blackjackBtn').addEventListener('click', () => {
+                                                                                                                                                                                      // Assuming your blackjack() function runs the game in blackjack.js
+                                                                                                                                                                                            if (typeof blackjack === 'function') {
+                                                                                                                                                                                                    blackjack();
+                                                                                                                                                                                                          } else {
+                                                                                                                                                                                                                  alert('Blackjack game function not found.');
+                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                            });
+                                                                                                                                                                                                                              </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Coming Soon DEGEN</title>
@@ -73,7 +123,7 @@
     }
   </style>
 </head>
-<body><script src="Blackjack.js"></script>
+<body>
 
   <div class="container">
     <h1>Coming Soon</h1>
