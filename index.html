@@ -1,134 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-      <title>Blackjack Game</title>
-        <style>
-            body {
-                  font-family: Arial, sans-serif;
-                        text-align: center;
-                              margin-top: 50px;
-                                  }
-                                      #blackjackBtn {
-                                            background-color: #006400;
-                                                  border: none;
-                                                        color: white;
-                                                              padding: 15px 30px;
-                                                                    font-size: 24px;
-                                                                          cursor: pointer;
-                                                                                border-radius: 12px;
-                                                                                      display: inline-flex;
-                                                                                            align-items: center;
-                                                                                                  gap: 15px;
-                                                                                                        transition: background-color 0.3s ease;
-                                                                                                            }
-                                                                                                                #blackjackBtn:hover {
-                                                                                                                      background-color: #228b22;
-                                                                                                                          }
-                                                                                                                              #blackjackBtn img {
-                                                                                                                                    height: 48px;
-                                                                                                                                          width: auto;
-                                                                                                                                                border-radius: 8px;
-                                                                                                                                                      box-shadow: 0 0 5px rgba(0,0,0,0.3);
-                                                                                                                                                          }
-                                                                                                                                                            </style>
-                                                                                                                                                            </head>
-                                                                                                                                                            <body>
-
-                                                                                                                                                              <button id="blackjackBtn">
-                                                                                                                                                                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Playing_card_spade_A.svg/120px-Playing_card_spade_A.svg.png" alt="Blackjack Card" />
-                                                                                                                                                                      Blackjack
-                                                                                                                                                                        </button>
-
-                                                                                                                                                                          <script src="Blackjack.js"></script>
-                                                                                                                                                                            <script>
-                                                                                                                                                                                document.getElementById('blackjackBtn').addEventListener('click', () => {
-                                                                                                                                                                                      // Assuming your blackjack() function runs the game in blackjack.js
-                                                                                                                                                                                            
-                                                                                                                                                                                                                         
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Coming Soon DEGEN</title>
+  <title>Blackjack Game</title>
   <style>
-    /* Reset and basic styling */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
     }
-    body, html {
-      height: 100%;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 0 20px;
-    }
-    .container {
-      max-width: 450px;
-      background: rgba(0,0,0,0.3);
-      padding: 40px 30px;
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-    }
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 15px;
-      letter-spacing: 2px;
-    }
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 30px;
-      line-height: 1.5;
-      color: #e0e0e0;
-    }
-    form {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-    }
-    input[type="email"] {
-      flex: 1;
-      padding: 12px 15px;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: none;
-      outline: none;
+    #player-cards, #dealer-cards {
+      margin-bottom: 10px;
     }
     button {
-      padding: 12px 25px;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: none;
-      background-color: #ff6b6b;
-      color: white;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+      margin-right: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
     }
-    button:hover {
-      background-color: #ff4757;
-    }
-    footer {
-      margin-top: 30px;
-      font-size: 0.9rem;
-      color: #bbb;
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
+  <h2>Dealer's Hand (<span id="dealer-sum">0</span>)</h2>
+  <div id="dealer-cards"></div>
 
-  <div class="container">
-    <h1>Coming Soon</h1>
-    <p>We are working hard to launch our new website. Stay tuned and subscribe to get notified when we go live!</p>
-    <form onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
-      <input type="email" placeholder="Enter your email" required />
-      <button type="submit">Notify Me</button>
-    </form>
-    <footer>&copy; 2025 akmdegen</footer>
-  </div>
+  <h2>Your Hand (<span id="player-sum">0</span>)</h2>
+  <div id="player-cards"></div>
+
+  <button id="hit-button">Hit</button>
+  <button id="stand-button">Stand</button>
+
+  <div id="result"></div>
+
+  <script>
+    const suits = ['♠', '♥', '♦', '♣'];
+    const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+
+    let deck = [];
+    let playerHand = [];
+    let dealerHand = [];
+    let gameOver = false;
+
+    function createDeck() {
+      deck = [];
+      for (let suit of suits) {
+        for (let value of values) {
+          deck.push({ suit, value });
+        }
+      }
+    }
+
+    function shuffleDeck() {
+      for (let i = deck.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [deck[i], deck[j]] = [deck[j], deck[i]];
+      }
+    }
+
+    function getCardValue(card) {
+      if (card.value === 'A') return 11;
+      if (['K', 'Q', 'J'].includes(card.value)) return 10;
+      return parseInt(card.value);
+    }
+
+    function calculateHandValue(hand) {
+      let value = 0;
+      let aceCount = 0;
+      for (let card of hand) {
+        value += getCardValue(card);
+        if (card.value === 'A') aceCount++;
+      }
+      // Adjust for Aces if value > 21
+      while (value > 21 && aceCount > 0) {
+        value -= 10;
+        aceCount--;
+      }
+      return value;
+    }
+
+    function renderCards(hand, containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      hand.forEach(card => {
+        const cardDiv = document.createElement('div');
+        cardDiv.textContent = card.value + card.suit;
+        cardDiv.style.display = 'inline-block';
+        cardDiv.style.border = '1px solid black';
+        cardDiv.style.borderRadius = '5px';
+        cardDiv.style.padding = '10px';
+        cardDiv.style.marginRight = '5px';
+        cardDiv.style.fontSize = '24px';
+        container.appendChild(cardDiv);
+      });
+    }
+
+    function startGame() {
+      gameOver = false;
+      playerHand = [];
+      dealerHand = [];
+      createDeck();
+      shuffleDeck();
+      // Initial deal
+      playerHand.push(deck.pop());
+      dealerHand.push(deck.pop());
+      playerHand.push(deck.pop());
+      dealerHand.push(deck.pop());
+      updateUI();
+      document.getElementById('result').textContent = '';
+      document.getElementById('hit-button').disabled = false;
+      document.getElementById('stand-button').disabled = false;
+    }
+
+    function updateUI() {
+      renderCards(playerHand, 'player-cards');
+      renderCards(dealerHand, 'dealer-cards');
+      document.getElementById('player-sum').textContent = calculateHandValue(playerHand);
+      // Show only first dealer card value if game is not over
+      if (gameOver) {
+        document.getElementById('dealer-sum').textContent = calculateHandValue(dealerHand);
+      } else {
+        let firstCardValue = getCardValue(dealerHand[0]);
+        document.getElementById('dealer-sum').textContent = firstCardValue;
+      }
+    }
+
+    function checkForEnd() {
+      let playerValue = calculateHandValue(playerHand);
+      if (playerValue > 21) {
+        document.getElementById('result').textContent = 'You bust! Dealer wins.';
+        endGame();
+        return true;
+      }
+      if (playerValue === 21) {
+        document.getElementById('result').textContent = 'Blackjack! You win!';
+        endGame();
+        return true;
+      }
+      return false;
+    }
+
+    function endGame() {
+      gameOver = true;
+      document.getElementById('hit-button').disabled = true;
+      document.getElementById('stand-button').disabled = true;
+      updateUI();
+    }
+
+    function playerHit() {
+      if (gameOver) return;
+      playerHand.push(deck.pop());
+      updateUI();
+      if (checkForEnd()) {
+        return;
+      }
+    }
+
+    function dealerTurn() {
+      let dealerValue = calculateHandValue(dealerHand);
+      while(dealerValue < 17) {
+        dealerHand.push(deck.pop());
+        dealerValue = calculateHandValue(dealerHand);
+      }
+      updateUI();
+      let playerValue = calculateHandValue(playerHand);
+
+      if (dealerValue > 21) {
+        document.getElementById('result').textContent = 'Dealer busts! You win!';
+      } else if (dealerValue === playerValue) {
+        document.getElementById('result').textContent = 'Push! It\'s a tie.';
+      } else if (dealerValue > playerValue) {
+        document.getElementById('result').textContent = 'Dealer wins.';
+      } else {
+        document.getElementById('result').textContent = 'You win!';
+      }
+      endGame();
+    }
+
+    document.getElementById('hit-button').addEventListener('click', playerHit);
+    document.getElementById('stand-button').addEventListener('click', dealerTurn);
+
+    startGame();
+  </script>
 </body>
 </html>
-
