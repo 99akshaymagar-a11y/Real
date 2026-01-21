@@ -2,50 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Casino Games</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Image with Background Music</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        img {
+            max-width: 80%;
+            max-height: 70%;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: #1db954;
+            color: white;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- Top Bar -->
-    <div class="top-bar">
-        <div class="wallet">Wallet: $<span id="wallet">1000</span></div>
-        <div class="profile">Profile</div>
-    </div>
+    <!-- Image -->
+    <img src="image.jpg" alt="My Image">
 
-    <!-- Progress / Wager Bar -->
-    <div class="progress-bar">
-        <input type="number" id="bet" placeholder="Enter Bet" />
-        <button onclick="setBet()">Set Bet</button>
-        <span>Current Bet: $<span id="currentBet">0</span></span>
-    </div>
+    <!-- Background Music -->
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+        Your browser does not support audio.
+    </audio>
 
-    <!-- Games -->
-    <div class="games">
+    <!-- Play Button -->
+    <button onclick="playMusic()">Play Music 🎵</button>
 
-        <!-- Roulette -->
-        <div class="game-card">
-            <h2>Roulette</h2>
-            <button onclick="playRoulette()">Spin</button>
-            <p id="rouletteResult"></p>
-        </div>
+    <script>
+        function playMusic() {
+            const music = document.getElementById("bgMusic");
+            music.play();
+        }
+    </script>
 
-        <!-- Dice -->
-        <div class="game-card">
-            <h2>Dice</h2>
-            <button onclick="playDice()">Roll</button>
-            <p id="diceResult"></p>
-        </div>
-
-        <!-- Plinko -->
-        <div class="game-card">
-            <h2>Plinko</h2>
-            <button onclick="playPlinko()">Drop Ball</button>
-            <p id="plinkoResult"></p>
-        </div>
-
-    </div>
-
-    <script src="script.js"></script>
 </body>
 </html>
