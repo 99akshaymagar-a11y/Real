@@ -2,59 +2,378 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Image with Background Music</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exclusive Access</title>
     <style>
-        body {
+        * {
             margin: 0;
-            height: 100vh;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            background: #000;
+            color: #fff;
+        }
+
+        /* Video Background */
+        #bg-video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -2;
+            transform: translate(-50%, -50%);
+            filter: brightness(0.4);
+        }
+
+        /* Dark Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0,0,0,0.7), rgba(20,20,40,0.8));
+            z-index: -1;
+        }
+
+        /* Login Screen */
+        .login-container {
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            background-color: #111;
-            color: white;
-            font-family: Arial, sans-serif;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            padding: 20px;
+            opacity: 1;
+            transition: opacity 0.5s ease;
         }
 
-        img {
-            max-width: 80%;
-            max-height: 70%;
+        .login-container.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #fff, #a0a0a0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #999;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+        }
+
+        .password-box {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1rem;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+            color: #fff;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            outline: none;
         }
 
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
+        input[type="password"]:focus {
+            border-color: #fff;
+            background: rgba(255,255,255,0.15);
+        }
+
+        input[type="password"]::placeholder {
+            color: #888;
+        }
+
+        .access-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
-            border-radius: 5px;
-            background: #1db954;
-            color: white;
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .access-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .access-btn:active {
+            transform: translateY(0);
+        }
+
+        .error-msg {
+            color: #ff4444;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .error-msg.show {
+            opacity: 1;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            padding: 40px;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .main-content.visible {
+            display: flex;
+            opacity: 1;
+        }
+
+        .welcome-title {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease;
+            text-shadow: 0 0 30px rgba(255,255,255,0.5);
+        }
+
+        .welcome-text {
+            font-size: 1.5rem;
+            color: #ccc;
+            max-width: 800px;
+            line-height: 1.8;
+            animation: fadeInUp 1s ease 0.3s backwards;
+        }
+
+        /* Audio Control */
+        .audio-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .audio-control:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.1);
+        }
+
+        .audio-control svg {
+            width: 24px;
+            height: 24px;
+            fill: #fff;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            .welcome-title {
+                font-size: 2.5rem;
+            }
+            .welcome-text {
+                font-size: 1.1rem;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Background Video (Horse Running) -->
+    <video id="bg-video" autoplay muted loop playsinline>
+        <source src="https://cdn.coverr.co/videos/coverr-galloping-horse-silhouette-3916/1080p.mp4" type="video/mp4">
+    </video>
 
-    <!-- Image -->
-    <img src="image.jpg" alt="My Image">
+    <div class="overlay"></div>
 
     <!-- Background Music -->
-    <audio id="bgMusic" loop>
-        <source src="music.mp3" type="audio/mpeg">
-        Your browser does not support audio.
+    <audio id="bg-music" loop>
+        <source src="https://cdn.pixabay.com/audio/2022/03/10/audio_4a8f1b1a58.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Play Button -->
-    <button onclick="playMusic()">Play Music 🎵</button>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginScreen">
+        <div class="logo">ð´</div>
+        <h1>EXCLUSIVE ACCESS</h1>
+        <p class="subtitle">Members Only Portal</p>
+        
+        <div class="password-box">
+            <input 
+                type="password" 
+                id="passwordInput" 
+                placeholder="Enter Access Code"
+                autocomplete="off"
+            >
+            <button class="access-btn" onclick="checkPassword()">
+                ENTER SITE
+            </button>
+            <p class="error-msg" id="errorMsg">Invalid access code. Please try again.</p>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden Initially) -->
+    <div class="main-content" id="mainContent">
+        <h1 class="welcome-title">Welcome, Elite Member</h1>
+        <p class="welcome-text">
+            You've entered an exclusive realm where only the chosen few tread. 
+            This sanctuary is reserved for those who possess the keys to our kingdom. 
+            Here, freedom runs as wild as the horses that inspire us. 
+            Explore, discover, and embrace the power of exclusivity.
+        </p>
+    </div>
+
+    <!-- Audio Control Button -->
+    <div class="audio-control" id="audioControl" onclick="toggleAudio()">
+        <svg id="audioIcon" viewBox="0 0 24 24">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+        </svg>
+    </div>
 
     <script>
-        function playMusic() {
-            const music = document.getElementById("bgMusic");
-            music.play();
-        }
-    </script>
+        // Set your password here
+        const correctPassword = "horse2024";
+        
+        const bgMusic = document.getElementById('bg-music');
+        const loginScreen = document.getElementById('loginScreen');
+        const mainContent = document.getElementById('mainContent');
+        const errorMsg = document.getElementById('errorMsg');
+        const passwordInput = document.getElementById('passwordInput');
+        const audioControl = document.getElementById('audioControl');
+        const audioIcon = document.getElementById('audioIcon');
+        
+        let isPlaying = false;
 
+        // Allow Enter key to submit
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        function checkPassword() {
+            const enteredPassword = passwordInput.value;
+            
+            if (enteredPassword === correctPassword) {
+                // Correct password
+                errorMsg.classList.remove('show');
+                loginScreen.classList.add('hidden');
+                
+                setTimeout(() => {
+                    loginScreen.style.display = 'none';
+                    mainContent.classList.add('visible');
+                    
+                    // Auto-play music after successful login
+                    bgMusic.play().then(() => {
+                        isPlaying = true;
+                        updateAudioIcon();
+                    }).catch(err => {
+                        console.log('Autoplay prevented:', err);
+                    });
+                }, 500);
+            } else {
+                // Wrong password
+                errorMsg.classList.add('show');
+                passwordInput.value = '';
+                passwordInput.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    passwordInput.style.animation = '';
+                }, 500);
+            }
+        }
+
+        function toggleAudio() {
+            if (isPlaying) {
+                bgMusic.pause();
+                isPlaying = false;
+            } else {
+                bgMusic.play();
+                isPlaying = true;
+            }
+            updateAudioIcon();
+        }
+
+        function updateAudioIcon() {
+            if (isPlaying) {
+                audioIcon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
+            } else {
+                audioIcon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
+            }
+        }
+
+        // Add shake animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>
