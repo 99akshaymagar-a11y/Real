@@ -1,15 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Degen Lab Dashboard</title>
+    <title>AKM Degen Lab</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<h1>Welcome to AKM Degen Lab</h1>
+<div class="nav">
+    <h2>AKM Degen Lab</h2>
+    <button onclick="showSection('casino')">Casino</button>
+    <button onclick="showSection('invest')">Investment</button>
+</div>
 
-<button onclick="location.href='casino.html'">Casino Simulator</button>
-<button onclick="location.href='invest.html'">Investment Simulator</button>
+<div id="casino" class="section">
+    <h1>Roulette Simulator</h1>
+    <button onclick="runCasino()">Run 1000 Spins</button>
+    <canvas id="casinoChart"></canvas>
+    <div id="casinoStats"></div>
+</div>
+
+<div id="invest" class="section" style="display:none;">
+    <h1>Investment Simulator</h1>
+    <button onclick="runInvestment()">Simulate 30 Days</button>
+    <canvas id="investChart"></canvas>
+    <div id="investStats"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="js/casino.js"></script>
+<script src="js/invest.js"></script>
+<script>
+function showSection(section) {
+    document.getElementById("casino").style.display = "none";
+    document.getElementById("invest").style.display = "none";
+    document.getElementById(section).style.display = "block";
+}
+</script>
 
 </body>
 </html>
