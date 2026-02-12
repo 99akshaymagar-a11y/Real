@@ -22,3 +22,15 @@ button {
 button:hover {
     background: orange;
 }
+.nav {
+    background: #111;
+    padding: 15px;
+}
+
+.nav button {
+    margin: 5px;
+}
+
+.section {
+    margin-top: 40px;
+}
