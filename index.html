@@ -31,6 +31,34 @@
       height: max(100vh, 100vw * 9 / 16);
       border: none;
     }
+    #unmute-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #unmute-hint {
+      color: rgba(255,255,255,0.75);
+      font-family: system-ui, sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 10px 20px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 999px;
+      background: rgba(0,0,0,0.25);
+      backdrop-filter: blur(6px);
+      user-select: none;
+      transition: opacity 0.3s;
+    }
+
+    #unmute-overlay.hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -38,11 +66,29 @@
   <div id="player-wrapper">
     <iframe
       id="yt"
-      src="https://www.youtube.com/embed/K6QjQeKfmUs?autoplay=1&mute=1&loop=1&playlist=K6QjQeKfmUs&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&playsinline=1"
+      src="https://www.youtube.com/embed/K6QjQeKfmUs?autoplay=1&mute=1&loop=1&playlist=K6QjQeKfmUs&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&playsinline=1&enablejsapi=1"
       allow="autoplay; fullscreen"
       allowfullscreen
     ></iframe>
   </div>
+
+  <div id="unmute-overlay">
+    <div id="unmute-hint">Tap anywhere for sound</div>
+  </div>
+
+  <script>
+    const overlay = document.getElementById('unmute-overlay');
+    const iframe = document.getElementById('yt');
+
+    overlay.addEventListener('click', () => {
+      // Post message to YouTube iframe to unmute
+      iframe.contentWindow.postMessage(
+        JSON.stringify({ event: 'command', func: 'unMute', args: [] }),
+        '*'
+      );
+      overlay.classList.add('hidden');
+    });
+  </script>
 
 </body>
 </html>
