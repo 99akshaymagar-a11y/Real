@@ -1,21 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>AKM Degen Lab</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loop</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+
+    #player-wrapper {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    /* Scale the 16:9 iframe to always cover the viewport */
+    #player-wrapper iframe {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      /* Ensure it covers any viewport ratio */
+      width: max(100vw, 100vh * 16 / 9);
+      height: max(100vh, 100vw * 9 / 16);
+      border: none;
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>AKM DEGEN LAB</h1>
-    <p>Risk. Probability. Money.</p>
+  <div id="player-wrapper">
+    <iframe
+      id="yt"
+      src="https://www.youtube.com/embed/K6QjQeKfmUs?autoplay=1&mute=1&loop=1&playlist=K6QjQeKfmUs&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&playsinline=1"
+      allow="autoplay; fullscreen"
+      allowfullscreen
+    ></iframe>
+  </div>
 
-    <input type="password" id="passkey" placeholder="Enter APasskey">
-    <button onclick="checkKey()">Enter Lab</button>
-
-    <p id="error"></p>
-</div>
-
-<script src="js/auth.js"></script>
 </body>
 </html>
